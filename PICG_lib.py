@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
 #01 Crie uma bibliotca em python para armazenar suas funcoes.
-#Note que se faz necessária a instalação da biblioteca matplotlib!
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
-import math
 
 def imsave(img):
 	mpimg.imsave("tmp.png", img)
 
-#02 Crie uma funcao chamada imread que recebe um nome de arquivo e retorna a...
-#...imagem lida.
+#02 Crie uma funcao chamada imread que recebe um nome de arquivo e retorna a imagem lida.
 def imread(image_file):
 	return mpimg.imread(image_file)
 
 
 #03 Abra e exiba uma imagem colorida.
-def ex3():
-	img = imread("./images/test20.png")
+def abra(img2):
+	img = imread(img2)
 	plt.imshow(img, origin='image')
 	plt.show()
 
@@ -157,9 +154,9 @@ def dft(img):
             cos = np.cos(rad)
             sin = np.dot(-1j,np.sin(rad))
             f = img
-
+            
             res = np.dot(f, np.add(cos,  sin))
-
+            
             fimg[u][v] = np.sum(res)
     return np.dot(1.0/(iW*iH), fimg)
 
@@ -193,6 +190,22 @@ def idft(img):
 
             fimg[u][v] = np.sum(res)
     return fimg
+    
+def fft(img):
+    width, height = size(img)
+    
+    img2 = img-1
+    
+    fft = np.fft.fft(img)
+    
+    for x in range(width):
+        for y in range(height):
+            img2[x][y][0] = int(fft[x][y][0])
+            img2[x][y][1] = int(fft[x][y][1])
+            img2[x][y][2] = int(fft[x][y][2])
+            
+    
+    return img2
 
 #Computação Gráfica
 def newImage(size, color):
@@ -264,18 +277,20 @@ def drawPoly(img, dots, color):
 
 
 #Execução
-img = imread('./images/riner.jpg')
+img = imread('./Imagens/exercicio_fft/lena1.jpg')
 imgBlack = newImage([32,32],255)
 imgWhite = newImage([32,32],0)
 imgColored = newImage([500,500],[255,0,255])
 imgCinza = rgb2gray(img)
 imgNeg = neg(img)
+imgFFT = fft(img)
 
 dots = [[250, 250], [350, 250], [350, 350], [300, 350], [325, 300]]
 
-imshow(img)
-imshow(imgBlack)
-imshow(imgWhite)
-imshow(imgColored)
-imshow(imgCinza)
-imshow(imgNeg)
+#imshow(img)
+#imshow(imgBlack)
+#imshow(imgWhite)
+#imshow(imgColored)
+#imshow(imgCinza)
+#imshow(imgNeg)
+imshow(imgFFT)
